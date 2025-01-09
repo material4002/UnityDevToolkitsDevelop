@@ -36,27 +36,14 @@ namespace Material.UnityDevToolkits.Core.FrameWork
             }
         }
         
-        /// <summary>
-        /// 日志模块，用于记录框架的运行状态
-        /// </summary>
-        public ILog Logger
-        {
-            get => _logger;
-            
-            protected set => _logger = value;
-        }
-
-        private ILog _logger;
+        
         
         /// <summary>
         /// 初始化方法，可用于加载配置文件，初始化参数
         /// </summary>
         protected abstract void InitContainer();
         
-        /// <summary>
-        /// 日志模块加载
-        /// </summary>
-        protected abstract void LoadLogger();
+       
         
         /// <summary>
         /// 配置模块的初始化，第一次遍历程序集
