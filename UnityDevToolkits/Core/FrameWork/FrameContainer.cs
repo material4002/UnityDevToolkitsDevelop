@@ -1,3 +1,5 @@
+using Material.UnityDevToolkits.Core.Logger;
+
 namespace Material.UnityDevToolkits.Core.FrameWork
 {
     /// <summary>
@@ -6,7 +8,7 @@ namespace Material.UnityDevToolkits.Core.FrameWork
     ///
     /// 框架实现方案：
     /// 1. 框架初始化（加载配置文件？设置默认配置文件）
-    /// 2. 加载日志模块
+    /// 2. 加载日志模块（可否作为一个模块而非耦合在一起）
     /// 3. 遍历程序集，加载模块
     /// 4. 遍历程序集，模块初始化
     /// 5. 进入游戏生命周期
@@ -33,6 +35,18 @@ namespace Material.UnityDevToolkits.Core.FrameWork
                 }
             }
         }
+        
+        /// <summary>
+        /// 日志模块，用于记录框架的运行状态
+        /// </summary>
+        public ILog Logger
+        {
+            get => _logger;
+            
+            protected set => _logger = value;
+        }
+
+        private ILog _logger;
         
         /// <summary>
         /// 初始化方法，可用于加载配置文件，初始化参数
