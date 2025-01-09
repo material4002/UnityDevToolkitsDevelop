@@ -1,4 +1,5 @@
 using Material.UnityDevToolkits.Core.Config;
+using Material.UnityDevToolkits.Core.FrameWork.Instances;
 using UnityEngine;
 
 namespace Material.UnityDevToolkits.Core.FrameWork
@@ -42,12 +43,11 @@ namespace Material.UnityDevToolkits.Core.FrameWork
             #if STATER_PATH
             //TODO: 在检测到配置文件的时候使用配置文件进行启动
             string path = "STATER_PATH";
-            
+            return null;
             #else
             //TODO: 使用默认配置启动框架
-            
+            return new SimpleContainer();
             #endif
-            return null;
         }
     }
 }

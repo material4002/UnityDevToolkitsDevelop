@@ -20,7 +20,7 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
         /// 所有的框架相关的内容都有特性作为标注
         /// 所以可以剔除掉一些不含有特性的类型
         /// </summary>
-        private Assembly _assembly;
+        private readonly Assembly _assembly;
         private List<Type> _types;
         
         private Dictionary<Type, IConfigInit> _configs;
@@ -28,9 +28,14 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
         
         public SimpleContainer()
         {
+            //注入唯一实例
+            FrameContainer.Instance = this;
+            
+            //获取程序集
             _assembly = Assembly.GetExecutingAssembly();
             _types = _assembly.GetTypes().ToList();
             
+            //进行初始化
             InitContainer();
             LoadConfiguration();
             Config();
@@ -46,6 +51,9 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
 
         protected override void LoadConfiguration()
         {
+            _configs = new Dictionary<Type, IConfigInit>();
+            _configListeners = new Dictionary<Type, List<IConfig>>();
+            
             //进行第一次遍历，获取全部的Config
             List<Type> configTypes = _types
                 .Where(t=> t.GetCustomAttribute<RegisterConfig>(false)!=null).ToList();
