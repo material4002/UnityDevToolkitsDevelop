@@ -113,12 +113,32 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
 
         protected override void EnterScene()
         {
-            
+            if (ConfigureDic.Any())
+            {
+                foreach (object config in ConfigureDic.Values)
+                {
+                    if (config is ISceneChange)
+                    {
+                        ISceneChange sceneChange = (ISceneChange) config;
+                        sceneChange.OnSceneEnter();
+                    }
+                }
+            }
         }
 
         protected override void ExitScene()
         {
-            
+            if (ConfigureDic.Any())
+            {
+                foreach (object config in ConfigureDic.Values)
+                {
+                    if (config is ISceneChange)
+                    {
+                        ISceneChange sceneChange = (ISceneChange) config;
+                        sceneChange.OnSceneExit();
+                    }
+                }
+            }
         }
     }
 }
