@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using UnityEditor;
+using UnityEngine.UI;
 
 namespace Material.UnityDevToolkits.Core.Config
 {
@@ -11,16 +14,21 @@ namespace Material.UnityDevToolkits.Core.Config
     public class RegisterConfig :Attribute
     {
         //TODO: 可能使用Type进行判断，根据情况去修改
-        public Attribute ListenedAttribute;
-        
-        public RegisterConfig(Attribute listenedAttribute=null)
+        public readonly Type ListenedAttributeType;
+
+        public class NullType 
         {
-            ListenedAttribute = listenedAttribute;
+        }
+        
+        public RegisterConfig([NotNull]Type listenedAttributeType)
+        {
+            this.ListenedAttributeType = listenedAttributeType;
         }
 
         public RegisterConfig()
         {
-            ListenedAttribute = null;
+            ListenedAttributeType = typeof(NullType);
         }
+        
     }
 }

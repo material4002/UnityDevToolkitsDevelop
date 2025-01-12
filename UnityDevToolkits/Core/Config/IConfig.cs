@@ -15,7 +15,7 @@ namespace Material.UnityDevToolkits.Core.Config
         /// <summary>
         /// 在遍历程序集时会将注册的类型实时传入Config函数中
         /// </summary>
-        void Config(Assembly assembly,Type type);
+        void Config(Assembly assembly,Type classType,Type attributeType);
         
         void AfterConfig();
     }

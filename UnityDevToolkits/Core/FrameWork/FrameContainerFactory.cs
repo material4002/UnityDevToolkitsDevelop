@@ -8,15 +8,14 @@ namespace Material.UnityDevToolkits.Core.FrameWork
     {
         /// <summary>
         /// 模块可通过获取此函数激活框架
-        /// 可将激活链向下传递
+        /// 可将激活链向下传递.
+        /// 在此阻止反复创建
         /// </summary>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        public static FrameContainer GetFrameContainer(this IConfig config)
+        public static FrameContainer GetFrameContainer(this IGetContainer iGetContainer)
         {
             if (FrameContainer.Instance == null)
             {
-                FrameContainer container = Create();
+                Create();
                 //TODO: 创建FrameContainer实例并返回
             }
             return FrameContainer.Instance;
@@ -35,19 +34,14 @@ namespace Material.UnityDevToolkits.Core.FrameWork
         #endif
         
         /// <summary>
-        /// 根据是否拥有配置文件变量来进行加载框架实例。
+        /// 在此进行框架的创建
         /// </summary>
         /// <returns>初始化完成的实例</returns>
         private static FrameContainer Create()
         {
-            #if STATER_PATH
-            //TODO: 在检测到配置文件的时候使用配置文件进行启动
-            string path = "STATER_PATH";
-            return null;
-            #else
-            //TODO: 使用默认配置启动框架
-            return new SimpleContainer();
-            #endif
+            //TODO: 在未来可通过配置文件进行创建
+            SimplyFrameContainer.CreateFrameContainer();
+            return FrameContainer.Instance;
         }
     }
 }

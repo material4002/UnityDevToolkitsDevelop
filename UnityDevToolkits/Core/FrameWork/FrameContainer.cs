@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Material.UnityDevToolkits.Core.Config;
 using Material.UnityDevToolkits.Core.Logger;
 
 namespace Material.UnityDevToolkits.Core.FrameWork
@@ -36,23 +40,39 @@ namespace Material.UnityDevToolkits.Core.FrameWork
             }
         }
         
+        /// <summary>
+        /// 模块容器，便于检索
+        /// </summary>
+        protected Dictionary<Type, object> ConfigureDic;
+        /// <summary>
+        /// 配置容器，在初始化时用于加载。
+        /// </summary>
+        protected Dictionary<Type, List<IConfig>> ConfigDic;
+        
+        /// <summary>
+        /// 当前的程序集
+        /// </summary>
+        protected readonly Assembly ExecutingAssembly = Assembly.GetExecutingAssembly();
+        
         
         
         /// <summary>
-        /// 初始化方法，可用于加载配置文件，初始化参数
+        /// 用于初始化框架的主体
+        /// 加载程序集，构造框架
         /// </summary>
         protected abstract void InitContainer();
         
-       
+        /// <summary>
+        /// 进入场景前执行，用于初始化模块。
+        /// 由于场景切换模块可能需要重新启动，所以需要在场景切换前重新初始化。
+        /// </summary>
+        protected abstract void EnterScene();
         
         /// <summary>
-        /// 配置模块的初始化，第一次遍历程序集
+        /// 离开场景前执行，用于清理模块。
         /// </summary>
-        protected abstract void LoadConfiguration();
-        
-        /// <summary>
-        /// 第二次配置模块加载，会遍历程序集，加载业务
-        /// </summary>
-        protected abstract void Config();
+        protected abstract void ExitScene();
+
+
     }
 }

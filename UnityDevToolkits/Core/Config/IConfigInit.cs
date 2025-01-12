@@ -7,6 +7,6 @@ namespace Material.UnityDevToolkits.Core.Config
     /// </summary>
     public interface IConfigInit
     {
-        void ConfigInit();
+        void OnConfigInit();
     }
 }
