@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Material.UnityDevToolkits.Core.Config;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
@@ -75,10 +76,16 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
         public void InitData()
         {
             //在此裁剪程序集
+            /*types = AppDomain
+                .CurrentDomain
+                .GetAssemblies()
+                .SelectMany(x=>x.GetTypes())
+                .Where(t => !t.GetCustomAttributes(false).Any() && !t.IsAbstract && !t.IsInterface).ToList();*/
             types = ExecutingAssembly
                 .GetTypes()
                 .Where(t => !t.GetCustomAttributes(false).Any() && !t.IsAbstract && !t.IsInterface)
                 .ToList();
+            
             
             //在此初始化字典
             ConfigureDic = new Dictionary<Type, object>();
