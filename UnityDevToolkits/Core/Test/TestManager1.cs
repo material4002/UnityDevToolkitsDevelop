@@ -14,7 +14,8 @@ namespace Material.UnityDevToolkits.Core.Test
         
         [GetComponent]
         public BoxCollider bc;
-        
+
+        [GetComponent(typeof(TestManager1),"GetCam")] public Camera camera;        
         public void InitAfterConstruct()
         {
             Debug.Log("TestManager1 InitAfterConstruct");
@@ -48,6 +49,13 @@ namespace Material.UnityDevToolkits.Core.Test
         public void OnExitScene()
         {
             Debug.Log("TestManager1 OnExitScene");
+        }
+
+        public static Component GetCam()
+        {
+            GameObject g= GameObject.Find("Main Camera");
+            Camera cam = g.GetComponent<Camera>();
+            return cam;
         }
     }
 }

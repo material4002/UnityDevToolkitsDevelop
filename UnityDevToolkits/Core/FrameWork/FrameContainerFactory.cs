@@ -27,7 +27,7 @@ namespace Material.UnityDevToolkits.Core.FrameWork
         /// 自动加载方案。
         /// 会在场景加载完成，画面刷新之前完成
         /// </summary>
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AutoLoad()
         {
             

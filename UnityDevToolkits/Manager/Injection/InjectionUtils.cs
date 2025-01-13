@@ -29,9 +29,20 @@ namespace Material.UnityDevToolkits.Manager.Injection
                 
                 foreach (FieldInfo field in componentFields)
                 {
-                    GameObject componentObj = new GameObject(field.FieldType.Name);
-                    componentObj.transform.SetParent(managerObj.transform);
-                    Component comp = componentObj.AddComponent(field.FieldType);
+                    Injection.GetComponent attr = field.GetCustomAttribute<Injection.GetComponent>(false);
+                    Component comp;
+                    if (attr.useFactoryMethod)
+                    {
+                        MethodInfo factoryMethod = attr.factoryType.GetMethod(attr.methodName,BindingFlags.Static | BindingFlags.Public);
+
+                        comp = factoryMethod.Invoke(null,null) as Component;
+                    }
+                    else
+                    {
+                        GameObject componentObj = new GameObject(field.FieldType.Name);
+                        componentObj.transform.SetParent(managerObj.transform);
+                        comp = componentObj.AddComponent(field.FieldType);
+                    }
                     
                     field.SetValue(manager,comp);
                 }
