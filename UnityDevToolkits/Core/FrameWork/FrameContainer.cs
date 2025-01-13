@@ -72,6 +72,18 @@ namespace Material.UnityDevToolkits.Core.FrameWork
         /// </summary>
         protected abstract void ExitScene();
 
-
+        public T GetConfigure<T>() where T : class
+        {
+            object configure;
+            if (ConfigureDic == null) throw new Exception("字典未能初始化,请检测逻辑顺序");
+            if (ConfigureDic.TryGetValue(typeof(T), out configure))
+            {
+                return configure as T;
+            }
+            else
+            {
+                throw new KeyNotFoundException("未注册该模块配置");
+            }
+        }
     }
 }

@@ -154,7 +154,17 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
                 }
             }
             
-            
+            //执行声明周期，在全部注册完后执行
+            if (ConfigureDic.Any())
+            {
+                foreach (object o in ConfigureDic.Values)
+                {
+                    if (o is IAfterConfig)
+                    {
+                        ((IAfterConfig)o).AfterConfigAll();
+                    }
+                }
+            }
         }
 
         protected override void EnterScene()
