@@ -60,7 +60,7 @@ namespace Material.UnityDevToolkits.Core.FrameWork
         /// 用于初始化框架的主体
         /// 加载程序集，构造框架
         /// </summary>
-        protected abstract void InitContainer();
+        public abstract void InitContainer();
         
         /// <summary>
         /// 进入场景前执行，用于初始化模块。

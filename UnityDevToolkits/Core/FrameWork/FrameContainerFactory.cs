@@ -1,3 +1,4 @@
+
 using Material.UnityDevToolkits.Core.Config;
 using Material.UnityDevToolkits.Core.FrameWork.Instances;
 using UnityEngine;
@@ -29,6 +30,7 @@ namespace Material.UnityDevToolkits.Core.FrameWork
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
         private static void AutoLoad()
         {
+            
             Create();
         }
         #endif
@@ -37,7 +39,7 @@ namespace Material.UnityDevToolkits.Core.FrameWork
         /// 在此进行框架的创建
         /// </summary>
         /// <returns>初始化完成的实例</returns>
-        private static FrameContainer Create()
+        public static FrameContainer Create()
         {
             //TODO: 在未来可通过配置文件进行创建
             SimplyFrameContainer.CreateFrameContainer();
