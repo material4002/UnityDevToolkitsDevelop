@@ -1,8 +1,7 @@
-using System;
 using Material.UnityDevToolkits.Core.Config;
 using Material.UnityDevToolkits.Core.FrameWork;
 
-namespace Material.UnityDevToolkits.Manager
+namespace Material.UnityDevToolkits.Manager.Factory
 {
     public static class ManagerFactory 
     {

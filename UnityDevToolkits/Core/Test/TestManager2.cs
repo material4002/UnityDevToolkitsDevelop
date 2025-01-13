@@ -1,5 +1,6 @@
 using Material.UnityDevToolkits.Core.Config;
 using Material.UnityDevToolkits.Manager;
+using Material.UnityDevToolkits.Manager.Injection;
 using Material.UnityDevToolkits.Manager.LifeCycles;
 using UnityEngine;
 
@@ -8,6 +9,12 @@ namespace Material.UnityDevToolkits.Core.Test
     [RegisterManager]
     public class TestManager2:IManagerAfterConstruct,IManagerCoreInit,IManagerInit,IManagerLastInit,IManagerChangeScene
     {
+        [GetComponent]
+        public Rigidbody rb;
+        
+        [GetComponent]
+        public BoxCollider bc;
+        
         public void InitAfterConstruct()
         {
             Debug.Log("TestManager2 InitAfterConstruct");

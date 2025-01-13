@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Material.UnityDevToolkits.Core.Config;
+using Material.UnityDevToolkits.Manager.Injection;
 using Material.UnityDevToolkits.Manager.LifeCycles;
+using UnityEngine;
 
 namespace Material.UnityDevToolkits.Manager
 {
@@ -21,11 +23,12 @@ namespace Material.UnityDevToolkits.Manager
         private OnSceneEnterDelegate _onSceneEnterDelegate;
         private OnSceneExitDelegate _onSceneExitDelegate;
         
+        private InjectionUtils _injectionUtils;
         
         public void OnConfigInit()
         {
             _managerDic = new Dictionary<Type, object>();
-
+            _injectionUtils = new InjectionUtils();
             
         }
 
@@ -38,6 +41,8 @@ namespace Material.UnityDevToolkits.Manager
         {
             object manager = assembly.CreateInstance(classType.FullName);
             _managerDic.Add(classType, manager);
+            
+            _injectionUtils.GetComponent(classType,manager);
 
             if (manager is IManagerAfterConstruct)
             {
@@ -103,5 +108,7 @@ namespace Material.UnityDevToolkits.Manager
                 });
             }
         }
+
+        
     }
 }

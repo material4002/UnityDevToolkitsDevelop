@@ -1,4 +1,4 @@
-namespace Material.UnityDevToolkits.Manager
+namespace Material.UnityDevToolkits.Manager.Factory
 {
     public interface IGetManager
     {
