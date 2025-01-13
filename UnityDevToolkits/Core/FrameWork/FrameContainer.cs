@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Material.UnityDevToolkits.Core.Config;
-using Material.UnityDevToolkits.Core.Logger;
 
 namespace Material.UnityDevToolkits.Core.FrameWork
 {

@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using com.bbbirder;
 using Material.UnityDevToolkits.Core.Config;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+
 using Debug = UnityEngine.Debug;
 
 
@@ -75,17 +77,6 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
 
         public void InitData()
         {
-            //在此裁剪程序集
-            /*types = AppDomain
-                .CurrentDomain
-                .GetAssemblies()
-                .SelectMany(x=>x.GetTypes())
-                .Where(t => !t.GetCustomAttributes(false).Any() && !t.IsAbstract && !t.IsInterface).ToList();*/
-            types = ExecutingAssembly
-                .GetTypes()
-                .Where(t => !t.GetCustomAttributes(false).Any() && !t.IsAbstract && !t.IsInterface)
-                .ToList();
-            
             
             //在此初始化字典
             ConfigureDic = new Dictionary<Type, object>();
@@ -98,88 +89,72 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
 
         public void LoadConfig()
         {
-            //在此注册Config
-            Type nullType = typeof(RegisterConfig.NullType);
-            foreach (Type type in types)
+            RegisterConfig[] registerConfigAttributes = Retriever.GetAllAttributes<RegisterConfig>();
+            //这里可以获取全部的Attribute,内部注册有绑定的类型
+            
+            //之后之间进行注册即可
+            //生成实例，注册字典信息
+            foreach (RegisterConfig registerConfigAttribute in registerConfigAttributes)
             {
-                var registerConfigs = type.GetCustomAttributes<RegisterConfig>();
-                if (registerConfigs.Any())
+                var type = registerConfigAttribute.targetInfo as Type;
+                object instance = ExecutingAssembly.CreateInstance(type.FullName);
+                ConfigureDic.Add(type,instance);
+
+                if (instance is IConfigInit)
                 {
-                    object instance = ExecutingAssembly.CreateInstance(type.FullName);
+                    ((IConfigInit)instance).OnConfigInit();
+                }
 
-                    if (instance is IConfigInit)
+                if (instance is IConfig)
+                {
+                    if (ConfigDic.ContainsKey(registerConfigAttribute.ListenedAttributeType))
                     {
-                        IConfigInit configInit = (IConfigInit) instance;
-                        configInit.OnConfigInit();
+                        ConfigDic[registerConfigAttribute.ListenedAttributeType].Add((IConfig)instance);
                     }
-
-                    if (instance is ISceneChange)
+                    else
                     {
-                        ISceneChange sceneChange = (ISceneChange) instance;
-                        onSceneEnter += sceneChange.OnSceneEnter;
-                        onSceneExit += sceneChange.OnSceneExit;
+                        ConfigDic.Add(registerConfigAttribute.ListenedAttributeType, new List<IConfig>() { (IConfig)instance });
                     }
-                    
-                    ConfigureDic.Add(type, instance);
+                }
 
-                    if (instance is IConfig)
-                    {
-                        IConfig config = (IConfig) instance;
-                        foreach (RegisterConfig registerConfig in registerConfigs)
-                        {
-                            Type registerType = registerConfig.ListenedAttributeType;
-                            
-                            if(registerType == nullType)continue;
-                            
-                            if (ConfigDic.ContainsKey(registerType))
-                            {
-                                ConfigDic[registerType].Add(config);
-                            }
-                            else
-                            {
-                                ConfigDic.Add(registerType, new List<IConfig> { config });
-                            }
-                        }
-                    }
-
-                    
+                if (instance is ISceneChange)
+                {
+                    ISceneChange sceneChange = (ISceneChange) instance;
+                    onSceneEnter += (sceneChange).OnSceneEnter;
+                    onSceneExit += (sceneChange).OnSceneExit;
                 }
             }
+            
+            
         }
 
         public void InitConfig()
         {
-            //在此初始化
-            var keys = ConfigDic.Keys;
-            foreach (Type type in types)
+            //使用新方案进行初始化
+            //获取全部的标签
+            DirectRetrieveAttribute[] attributes = Retriever.GetAllAttributes<DirectRetrieveAttribute>();
+            //遍历
+            if (attributes.Any())
             {
-                object[] customAttributes = type.GetCustomAttributes(false);
-                Type[] attributeTypes = Array.ConvertAll<object, Type>(customAttributes, a => a.GetType());
-
-                List<Type> intersect = new List<Type>();
-                if (keys.Any())
+                foreach (DirectRetrieveAttribute attribute in attributes)
                 {
-                    intersect = keys.Intersect(attributeTypes).ToList();
-                }
-
-                if (intersect.Any())
-                {
-                    List<IConfig> configs = new List<IConfig>();
-                    foreach (Type t in intersect)
+                    Type attrType = attribute.GetType();
+                    Type classType = attribute.targetInfo as Type;
+                    if(classType == null) continue;
+                    
+                    if (ConfigDic.ContainsKey(attrType))
                     {
-                        if (ConfigDic.TryGetValue(t, out configs))
+                        foreach (IConfig config in ConfigDic[attrType])
                         {
-                            foreach (IConfig config in configs)
-                            {
-                                config.BeforeConfig();
-                                config.Config(ExecutingAssembly, type, t);
-                                config.AfterConfig();
-                            }
+                            config.BeforeConfig();
+                            config.Config(ExecutingAssembly,classType,attrType);
+                            config.AfterConfig();
                         }
                     }
                 }
             }
-
+            
+            
         }
 
         protected override void EnterScene()

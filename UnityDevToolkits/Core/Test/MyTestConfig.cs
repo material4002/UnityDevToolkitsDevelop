@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Material.UnityDevToolkits.Core.Test
 {
-    [RegisterConfig(typeof(MonoBehaviour))]
+    [RegisterConfig(typeof(TestAttr))]
     public class MyTestConfig: IConfigInit,IConfig,ISceneChange,IGetContainer
     {
         public void OnConfigInit()
