@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Material.UnityDevToolkits.PlayerStateMachine
 {
@@ -203,7 +204,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
         
         public override bool ChangeState(string stateName)
         {
-            return base.ChangeState(stateName);
+            return component.ChangeState(stateName);
         }
         
         public bool ContainState(string stateName)
@@ -216,6 +217,23 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
             OnExitState();
             _currentStateList = _statesDic[stateName];
             OnEnterState();
+        }
+
+        public override void Init(StateMachineBody body, PlayerStateMachineComp component, GameObject gameObject, Transform transform,
+            string stateName, string stateMachineName)
+        {
+            base.Init(body, component, gameObject, transform, stateName, stateMachineName);
+            
+            //为状态机添加数据
+            if(_statesDic.Any())
+                foreach (KeyValuePair<string,List<AbstractState>> pair in _statesDic)
+                {
+                    if(pair.Value.Any())
+                        foreach (AbstractState state in pair.Value)    
+                        {
+                            state.Init(this,component,gameObject,transform,pair.Key,stateMachineName);
+                        }
+                }
         }
     }
 }

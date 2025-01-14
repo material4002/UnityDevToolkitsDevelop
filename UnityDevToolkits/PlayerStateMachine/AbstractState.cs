@@ -58,7 +58,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
         /// <summary>
         /// 初始化函数，不要主动调用
         /// </summary>
-        public void Init(StateMachineBody body, PlayerStateMachineComp component, GameObject gameObject,
+        public virtual void Init(StateMachineBody body, PlayerStateMachineComp component, GameObject gameObject,
             Transform transform, string stateName,string stateMachineName)
         {
             _body = body;
