@@ -23,7 +23,7 @@ namespace Material.UnityDevToolkits.Core.Test
 
         public override void OnUpdate()
         {
-            
+            Debug.Log($"Test2 OnUpdate in {component.name}");
         }
 
         public override void OnFixedUpdate()

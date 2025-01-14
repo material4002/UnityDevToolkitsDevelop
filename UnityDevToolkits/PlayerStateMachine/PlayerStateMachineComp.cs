@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Material.UnityDevToolkits.PlayerStateMachine
 {
-    public class PlayerStateMachineComp : MonoBehaviour,IGetStateMachineBody,IChangeState
+    public class PlayerStateMachineComp : MonoBehaviour,IGetStateMachineBody,IChangeState,IStateLifeCircle
     {
         public string stateMachineName = "";
         public string defaultStateName = "Default";
@@ -23,6 +23,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
             _body.Init(_body,this,gameObject,transform,"body",stateMachineName);
             _body.OnAwake();
             
+            OnAwake();
         }
 
         private void Start()
@@ -30,26 +31,36 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
             _body.OnStart();
             //切换到默认状态
             ChangeState(defaultStateName);
+            
+            OnStart();
         }
 
         private void OnEnable()
         {
             _body.OnMachineEnabled();
+            
+            OnMachineEnabled();
         }
 
         private void OnDisable()
         {
             _body.OnMachineDisabled();
+            
+            OnMachineDisabled();
         }
 
         private void Update()
         {
             _body.OnUpdate();
+            
+            OnUpdate();;
         }
 
         private void LateUpdate()
         {
             _body.OnLateUpdate();
+            
+            OnLateUpdate();
 
             if (_isChangingState)
             {
@@ -62,6 +73,8 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
         private void FixedUpdate()
         {
             _body.OnFixedUpdate();
+            
+            OnFixedUpdate();
         }
 
         public bool ChangeState(string stateName)
@@ -76,6 +89,43 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
             {
                 return false;
             }
+        }
+
+        public virtual void OnAwake()
+        {
+            
+        }
+
+        public virtual void OnStart()
+        {
+            
+        }
+
+        public virtual void OnUpdate()
+        {
+            
+        }
+
+        public virtual void OnFixedUpdate()
+        {
+            
+        }
+
+        public virtual void OnLateUpdate()
+        {
+            
+        }
+
+        
+
+        public virtual void OnMachineEnabled()
+        {
+            
+        }
+
+        public virtual void OnMachineDisabled()
+        {
+            
         }
     }
 }

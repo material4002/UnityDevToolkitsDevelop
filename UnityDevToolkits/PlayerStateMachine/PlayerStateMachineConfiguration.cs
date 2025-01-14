@@ -98,6 +98,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
                             
                             //创建状态实例
                             AbstractState state = val.assembly.CreateInstance(val.classType.FullName) as AbstractState;
+                            state.InitAfterConstruct();
                     
                             //验证名称
                             string stateName = val.stateName;

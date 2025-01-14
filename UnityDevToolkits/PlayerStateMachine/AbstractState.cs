@@ -7,7 +7,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
     /// 用于定义一个状态
     /// 内部有抽象的生命周期函数
     /// </summary>
-    public abstract class AbstractState : IChangeState
+    public abstract class AbstractState : IChangeState,IStateLifeCircle
     {
         //状态名称
         private string _stateName;
@@ -52,7 +52,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
         //切换场景接口
         public virtual bool ChangeState(string stateName)
         {
-            return false;
+            return component.ChangeState(stateName);
         }
         
         /// <summary>
