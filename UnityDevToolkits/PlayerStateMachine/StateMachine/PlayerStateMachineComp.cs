@@ -1,7 +1,7 @@
-using System;
+using Material.UnityDevToolkits.PlayerStateMachine.Factory;
 using UnityEngine;
 
-namespace Material.UnityDevToolkits.PlayerStateMachine
+namespace Material.UnityDevToolkits.PlayerStateMachine.StateMachine
 {
     public class PlayerStateMachineComp : MonoBehaviour,IGetStateMachineBody,IChangeState,IStateLifeCircle
     {

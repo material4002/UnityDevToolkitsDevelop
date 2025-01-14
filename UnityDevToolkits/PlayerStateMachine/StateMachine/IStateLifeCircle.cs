@@ -1,4 +1,4 @@
-namespace Material.UnityDevToolkits.PlayerStateMachine
+namespace Material.UnityDevToolkits.PlayerStateMachine.StateMachine
 {
     public interface IStateLifeCircle
     {

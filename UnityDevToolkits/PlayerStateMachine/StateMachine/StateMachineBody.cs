@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Material.UnityDevToolkits.PlayerStateMachine
+namespace Material.UnityDevToolkits.PlayerStateMachine.StateMachine
 {
     /// <summary>
     /// 储存状态机的数据结构，

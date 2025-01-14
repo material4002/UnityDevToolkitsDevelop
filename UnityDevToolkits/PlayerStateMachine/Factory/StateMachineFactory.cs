@@ -1,8 +1,8 @@
 using Material.UnityDevToolkits.Core.Config;
 using Material.UnityDevToolkits.Core.FrameWork;
-using UnityEngine;
+using Material.UnityDevToolkits.PlayerStateMachine.StateMachine;
 
-namespace Material.UnityDevToolkits.PlayerStateMachine
+namespace Material.UnityDevToolkits.PlayerStateMachine.Factory
 {
     public static class StateMachineFactory
     {

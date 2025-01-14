@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Material.UnityDevToolkits.PlayerStateMachine
+namespace Material.UnityDevToolkits.PlayerStateMachine.StateMachine
 {
     /// <summary>
     /// 状态抽象类
