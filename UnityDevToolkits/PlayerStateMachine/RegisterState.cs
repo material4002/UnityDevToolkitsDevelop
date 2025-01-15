@@ -1,3 +1,4 @@
+using System;
 using com.bbbirder;
 
 namespace Material.UnityDevToolkits.PlayerStateMachine
@@ -9,6 +10,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
     /// 状态名称:如果不进行填写/为空字符串则以类名作为状态名称
     /// 状态机名称：如果不进行填写/为空字符串则为所有的状态机进行注册
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class,AllowMultiple = true,Inherited = false)]
     public class RegisterState:DirectRetrieveAttribute
     {
         private readonly string _stateName;

@@ -12,6 +12,7 @@ namespace Material.UnityDevToolkits.Core.Config
     /// 可以注册需要监听的注解
     /// 在第二次遍历程序集的时候会将符合条件的类型传入注册函数中
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class,AllowMultiple = false,Inherited = false)]
     public class RegisterConfig :DirectRetrieveAttribute
     {
         //TODO: 可能使用Type进行判断，根据情况去修改
