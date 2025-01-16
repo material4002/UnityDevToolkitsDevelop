@@ -147,7 +147,7 @@ namespace Material.UnityDevToolkits.Core.FrameWork.Instances
                         foreach (IConfig config in ConfigDic[attrType])
                         {
                             config.BeforeConfig();
-                            config.Config(ExecutingAssembly,classType,attrType);
+                            config.Config(ExecutingAssembly,classType,attrType,attribute);
                             config.AfterConfig();
                         }
                     }

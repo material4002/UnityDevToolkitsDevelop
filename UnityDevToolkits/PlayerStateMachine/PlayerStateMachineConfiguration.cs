@@ -32,10 +32,50 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
             
         }
 
-        public void Config(Assembly assembly, Type classType, Type attributeType)
+        public void Config(Assembly assembly, Type classType, Type attributeType,Attribute attribute)
         {
             if(!classType.IsSubclassOf(_abstractStateType))return;
-            RegisterState[] stateAttrs = classType.GetCustomAttributes<RegisterState>().ToArray();
+            
+            //使用了循环遍历全部的attribute，纯在重复注册问题
+            //使用单次注册
+            //如果状态机名称为空，则添加到全部的状态机中
+            RegisterState stateAttr = attribute as RegisterState;
+            if (string.IsNullOrEmpty(stateAttr.stateMachineName))
+            {
+                //由于不清楚是否全部的状态机已经创建完成，所以这里不进行添加
+                //需要延迟进行加载
+                        
+                //验证状态名
+                string stateName = stateAttr.stateName;
+                if(string.IsNullOrEmpty(stateAttr.stateName)) stateName = classType.Name;
+                        
+                //添加到延迟加载列表中
+                _delayLoadState.Add((assembly,classType,attributeType,stateName));
+            }
+            else//如果状态机名称不为空，则添加到指定的状态机中
+            {
+                //如果不存在该状态机，则创建新的状态机
+                if (!_stateMachineDic.ContainsKey(stateAttr.stateMachineName))
+                {
+                    _stateMachineDic.Add(stateAttr.stateMachineName, new StateMachineBody());
+                }
+                    
+                //获取状态机
+                StateMachineBody stateMachineBody = _stateMachineDic[stateAttr.stateMachineName];
+                    
+                //创建状态实例
+                AbstractState state = assembly.CreateInstance(classType.FullName) as AbstractState;
+                    
+                //验证名称
+                string stateName = stateAttr.stateName;
+                if (string.IsNullOrEmpty(stateAttr.stateName)) stateName = classType.Name;
+                    
+                //添加状态到状态机中
+                stateMachineBody.AddState(stateName,state);
+            }
+            
+            
+            /*RegisterState[] stateAttrs = classType.GetCustomAttributes<RegisterState>().ToArray();
 
             if (stateAttrs.Any())
             {
@@ -77,7 +117,7 @@ namespace Material.UnityDevToolkits.PlayerStateMachine
                     }
                     
                 }
-            }
+            }*/
         }
 
         public void AfterConfig()

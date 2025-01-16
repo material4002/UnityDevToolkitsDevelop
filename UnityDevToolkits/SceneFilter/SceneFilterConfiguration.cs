@@ -40,13 +40,59 @@ namespace Material.UnityDevToolkits.SceneFilter
         /// <summary>
         /// 将合法的过滤器注册到过滤树对应的位置
         /// </summary>
-        public void Config(Assembly assembly, Type classType, Type attributeType)
+        public void Config(Assembly assembly, Type classType, Type attributeType,Attribute attribute)
         {
             //双验证，必须继承BaseFilter，并且有RegisterFilter属性标记
             if (classType.IsSubclassOf(_baseFilterType))
             {
+                //使用单次注册替换注册全部的内容
+                //储存路径
+                RegisterFilter filterAttr = attribute as RegisterFilter;
+                
+                string path = filterAttr.Path;
+                        
+                //如果没有路径，则使用类名作为默认的路径，并储存于根目录上
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = classType.Name;
+                }
+                        
+                //分割路径，并逐个遍历创建节点
+                string[] paths = path.Split('/');
+                        
+                //当前节点，默认从根目录开始遍历
+                FilterNode node = _root;
+                        
+                //遍历路径
+                if (paths.Any())
+                {
+                    for (int i = 0; i < paths.Length; i++)
+                    {
+                        //如果当前节点已经存在，则直接进入子节点
+                        if (node.children.ContainsKey(paths[i]))
+                        {
+                            node = node.children[paths[i]];
+                        }
+                        else //如果不存在，则创建新节点并加入到当前节点的子节点中
+                        {
+                            FilterNode newNode = new FilterNode(paths[i]);
+                            node.children.Add(paths[i], newNode);
+                            node = newNode;
+                        }
+
+                        //如果到达最后一个节点，说明到达过滤器注册位置，添加过滤器
+                        if (i == paths.Length - 1)
+                        {
+                            BaseFilter filter = assembly.CreateInstance(classType.FullName) as BaseFilter;
+                            node.AddFilter(filter);
+                            node.type = filterAttr.Type;
+                            filter.Init(); //初始化过滤器
+                        }
+                    }
+                }
+
                 //获取全部的注册
-                List<RegisterFilter> attributes = classType.GetCustomAttributes<RegisterFilter>().ToList();
+                /*List<RegisterFilter> attributes = classType.GetCustomAttributes<RegisterFilter>().ToList();
                 
                 //遍历所有的注册，进行注册操作
                 if (attributes.Any())
@@ -96,7 +142,7 @@ namespace Material.UnityDevToolkits.SceneFilter
                             }
                         }
                     }
-                }
+                }*/
             }
         }
 

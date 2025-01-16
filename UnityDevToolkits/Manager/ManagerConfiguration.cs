@@ -37,7 +37,7 @@ namespace Material.UnityDevToolkits.Manager
             
         }
 
-        public void Config(Assembly assembly, Type classType, Type attributeType)
+        public void Config(Assembly assembly, Type classType, Type attributeType,Attribute attribute)
         {
             object manager = assembly.CreateInstance(classType.FullName);
             _managerDic.Add(classType, manager);

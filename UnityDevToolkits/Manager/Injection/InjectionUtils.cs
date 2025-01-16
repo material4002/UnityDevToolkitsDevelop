@@ -8,7 +8,7 @@ namespace Material.UnityDevToolkits.Manager.Injection
     internal class InjectionUtils
     {
         private GameObject _componentContainer;
-        private readonly Type _getComponentAttributeType = typeof(GetComponent);
+        //private readonly Type _getComponentAttributeType = typeof(GetComponent);
         
         public InjectionUtils()
         {
@@ -18,8 +18,8 @@ namespace Material.UnityDevToolkits.Manager.Injection
         
         public void GetComponent(Type managerType, object manager)
         {
-            FieldInfo[] componentFields = managerType.GetFields()
-                .Where(field => field.GetCustomAttributes(false).Any(a => a.GetType() == _getComponentAttributeType))
+            FieldInfo[] componentFields = managerType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)
+                .Where(field => field.GetCustomAttributes<GetComponent>(false).Any())
                 .ToArray();
 
             if (componentFields.Any())

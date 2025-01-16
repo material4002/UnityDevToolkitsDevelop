@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Material.UnityDevToolkits.Manager.Injection
 {
+    [AttributeUsage(AttributeTargets.Field ,AllowMultiple = false,Inherited = false)]
     public class GetComponent:DirectRetrieveAttribute
     {
         public readonly Type factoryType;

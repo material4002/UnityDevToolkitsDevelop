@@ -35,7 +35,7 @@ namespace Material.UnityDevToolkits.CommandPanel
             
         }
 
-        public void Config(Assembly assembly, Type classType, Type attributeType)
+        public void Config(Assembly assembly, Type classType, Type attributeType,Attribute attribute)
         {
             if(!classType.IsSubclassOf(_commandType))return;
             
